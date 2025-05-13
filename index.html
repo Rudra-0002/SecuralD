@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SecuralD – Own Your Digital Identity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary-start: #9b87f5;
+      --primary-end: #7E69AB;
+      --dark-bg: #1A1F2C;
+      --white: #ffffff;
+      --accent: #E5DEFF;
+      --hover-bg: #695eae;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: var(--dark-bg);
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    header {
+      padding: 8rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    header h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: fadeInUp 1s ease-out;
+    }
+
+    header p {
+      font-size: 1.75rem;
+      margin-bottom: 2.5rem;
+      color: var(--accent);
+    }
+
+    .cta {
+      background: var(--accent);
+      color: var(--dark-bg);
+      padding: 1.25rem 2.5rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      transition: all 0.4s ease;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      position: relative;
+      display: inline-block;
+      animation: fadeInUp 2s ease-out;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: 0.6s;
+    }
+
+    .cta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+
+    .cta:hover::before {
+      left: 100%;
+    }
+
+    section {
+      padding: 6rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      animation: fadeInUp 1.5s ease-out;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .feature {
+      background: rgba(44, 47, 72, 0.6);
+      backdrop-filter: blur(12px);
+      padding: 2.5rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 2s ease-out;
+    }
+
+    .feature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(155, 135, 245, 0.1), transparent);
+      transition: 0.6s;
+    }
+
+    .feature:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+
+    .feature:hover::before {
+      left: 100%;
+    }
+
+    .feature i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .feature:hover i {
+      transform: rotate(360deg);
+    }
+
+    .feature h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature p {
+      color: var(--accent);
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--accent);
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 2rem;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      header {
+        padding: 6rem 2rem;
+      }
+
+      header h1 {
+        font-size: 3rem;
+      }
+
+      header p {
+        font-size: 1.5rem;
+      }
+
+      .cta {
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Added Canvas for 3D Animation -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- 3D Background -->
+  <div id="webgl-container"></div>
+
+  <!-- Hero Section -->
+  <header>
+    <div class="hero-content">
+      <h1><span>🔐</span> SecuralD</h1>
+      <p>Own Your Identity. Share It Smarter. Stay in Control.</p>
+      <a class="cta" href="https://forms.gle/hupmjjppLzWAK5T69">Get Early Access</a>
+      <p style="margin-top: 1.5rem; font-size: 1.1rem; color: var(--accent); font-weight: 600;">
+        Want to Protect Your Documents? Join the Waitlist and Secure Your Spot!
+      </p>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section>
+    <div class="features">
+      <div class="feature">
+        <i class="fas fa-user-shield"></i>
+        <h3>Decentralized Identity</h3>
+        <p>Protect your personal information with self-sovereign identity architecture. You’re in control of your data.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-file-contract"></i>
+        <h3>Secure Document Vault</h3>
+        <p>Store sensitive documents with end-to-end encryption and smart access control. No more data leaks.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-share-alt"></i>
+        <h3>Smart Sharing</h3>
+        <p>Share access, not files. Define permissions, revoke any time, and ensure full audit trails for peace of mind.</p>
+      </div>
+      <div class="feature">
+        <i class="fas fa-lock"></i>
+        <h3>Privacy First</h3>
+        <p>No tracking. No surveillance. Your data stays encrypted, and no one—not even us—can access it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 SecuralD. All rights reserved. | Designed with privacy in mind.
+  </footer>
+
+  <!-- 3D Animation (Three.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('bg-canvas'), alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+    const material = new THREE.MeshStandardMaterial({ color: 0x9b87f5 });
+    const torusKnot = new THREE.Mesh(geometry, material);
+    scene.add(torusKnot);
+
+    const light = new THREE.PointLight(0xffffff, 1);
+    light.position.set(25, 25, 25);
+    scene.add(light);
+
+    camera.position.z = 40;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      torusKnot.rotation.x += 0.01;
+      torusKnot.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
